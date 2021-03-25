@@ -1,14 +1,10 @@
 package main
 
 import (
-	"log"
-	// unittest "unit-test"
-	"unit-test/customer"
-	_ "unit-test/docs"
+	"fiber-swagger/controller"
+	_ "fiber-swagger/docs"
 )
 
-
 func main() {
-	// unittest.Test()
-	log.Panic(customer.StartServer())
+	controller.StartServer()
 }

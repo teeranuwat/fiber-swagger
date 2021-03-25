@@ -18,6 +18,7 @@ var doc = `{
     "info": {
         "description": "{{.Description}}",
         "title": "{{.Title}}",
+        "termsOfService": "http://swagger.io/terms/",
         "contact": {
             "name": "API Support",
             "email": "fiber@swagger.io"
@@ -30,7 +31,209 @@ var doc = `{
     },
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
-    "paths": {}
+    "paths": {
+        "/accounts/{id}": {
+            "get": {
+                "description": "get string by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Show a account",
+                "operationId": "get-string-by-int",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Account ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/fiberswagger.Account"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/fiberswagger.HTTPError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/fiberswagger.HTTPError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/fiberswagger.HTTPError"
+                        }
+                    }
+                }
+            }
+        },
+        "/create": {
+            "post": {
+                "description": "add by customer data json",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer"
+                ],
+                "summary": "Add a customer",
+                "parameters": [
+                    {
+                        "description": "Add customer",
+                        "name": "account",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.CustomerInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controller.CustomerData"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httputil.HTTPError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/httputil.HTTPError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httputil.HTTPError"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "controller.Account": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                }
+            }
+        },
+        "controller.CustomerData": {
+            "type": "object",
+            "properties": {
+                "age": {
+                    "type": "integer"
+                },
+                "birthdate": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "firstname": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "idcard": {
+                    "type": "string"
+                },
+                "lastname": {
+                    "type": "string"
+                },
+                "tel": {
+                    "type": "string"
+                }
+            }
+        },
+        "controller.CustomerInput": {
+            "type": "object",
+            "properties": {
+                "birthdate": {
+                    "type": "string",
+                    "format": "date",
+                    "example": "2000-01-02"
+                },
+                "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "mark.woodsome@gmail.com"
+                },
+                "firstname": {
+                    "type": "string",
+                    "format": "first name",
+                    "example": "mark"
+                },
+                "idcard": {
+                    "type": "string",
+                    "format": "id card",
+                    "example": "11129292929292"
+                },
+                "lastname": {
+                    "type": "string",
+                    "format": "last name",
+                    "example": "woodsome"
+                },
+                "tel": {
+                    "type": "string",
+                    "format": "mobile no.",
+                    "example": "0877766988"
+                }
+            }
+        },
+        "controller.HTTPError": {
+            "type": "object"
+        },
+        "fiberswagger.Account": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                }
+            }
+        },
+        "fiberswagger.HTTPError": {
+            "type": "object"
+        },
+        "httputil.HTTPError": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 400
+                },
+                "message": {
+                    "type": "string",
+                    "example": "status bad request"
+                }
+            }
+        }
+    }
 }`
 
 type swaggerInfo struct {
@@ -45,8 +248,8 @@ type swaggerInfo struct {
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = swaggerInfo{
 	Version:     "1.0",
-	Host:        "localhost:3500",
-	BasePath:    "/api/v1",
+	Host:        "localhost:8080",
+	BasePath:    "/",
 	Schemes:     []string{},
 	Title:       "Fiber Example API",
 	Description: "This is a sample swagger for Fiber",
